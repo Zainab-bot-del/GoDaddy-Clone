@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoDaddy Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f7f7f7;
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 5%;
+            border-bottom: 1px solid #eee;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a9d7f;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #ff5c5c;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #444;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: #1a9d7f;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-outline {
+            border: 1px solid #1a9d7f;
+            color: #1a9d7f;
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background-color: #1a9d7f;
+            color: white;
+        }
+
+        .btn-solid {
+            background-color: #1a9d7f;
+            color: white;
+            border: none;
+        }
+
+        .btn-solid:hover {
+            background-color: #15846b;
+        }
+
+        /* Page Container */
+        .page-container {
+            flex: 1;
+            display: none;
+        }
+
+        .page-active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(to right, #1a9d7f, #26c499);
+            color: white;
+            padding: 60px 5%;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .domain-search {
+            background: white;
+            max-width: 700px;
+            margin: 0 auto;
+            border-radius: 8px;
+            padding: 5px;
+            display: flex;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .domain-search input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 8px 0 0 8px;
+            font-size: 1rem;
+        }
+
+        .domain-search button {
+            padding: 15px 25px;
+            background: #ff5c5c;
+            color: white;
+            border: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .domain-search button:hover {
+            background: #ff3c3c;
+        }
+
+        .domain-examples {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Products Section */
+        .products {
+            padding: 60px 5%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-img {
+            height: 180px;
+            background-color: #f0f9f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img i {
+            font-size: 60px;
+            color: #1a9d7f;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-info h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-info p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        /* Sign Up Section */
+        .form-container {
+            max-width: 500px;
+            margin: 40px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-size: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #1a9d7f;
+            outline: none;
+        }
+
+        .password-strength {
+            height: 5px;
+            background: #eee;
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s, background 0.3s;
+        }
+
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        .terms input {
+            margin-top: 5px;
+            margin-right: 10px;
+        }
+
+        .terms label {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .terms a {
+            color: #1a9d7f;
+            text-decoration: none;
+        }
+
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        .form-btn {
+            width: 100%;
+            padding: 15px;
+            background: #1a9d7f;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .form-btn:hover {
+            background: #15846b;
+        }
+
+        .form-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 15px;
+        }
+
+        .form-link a {
+            color: #1a9d7f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .form-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            padding: 30px 5%;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .dashboard-header h2 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        .dashboard-welcome {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .dashboard-welcome h3 {
+            color: #1a9d7f;
+            margin-bottom: 10px;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .stat-card i {
+            font-size: 30px;
+            color: #1a9d7f;
+            margin-bottom: 15px;
+        }
+
+        .stat-card h3 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #666;
+        }
+
+        .dashboard-services {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .services-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .services-header h3 {
+            color: #333;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .service-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-card h4 {
+            color: #1a9d7f;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .service-status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #e6f7f3;
+            color: #1a9d7f;
+        }
+
+        .status-pending {
+            background: #fff8e6;
+            color: #ff9900;
+        }
+
+        /* Features Section */
+        .features {
+            background-color: #fff;
+            padding: 60px 5%;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .feature-card i {
+            font-size: 40px;
+            color: #1a9d7f;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .feature-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 60px 5% 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .footer-column a:hover {
+            color: #1a9d7f;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid #333;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .domain-search {
+                flex-direction: column;
+            }
+
+            .domain-search input {
+                border-radius: 8px 8px 0 0;
+            }
+
+            .domain-search button {
+                border-radius: 0 0 8px 8px;
+            }
+            
+            .form-container {
+                margin: 20px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="top-nav">
+            <div class="logo" onclick="showPage('home-page')">Go<span>Daddy</span></div>
+            <div class="nav-links">
+                <a href="#" onclick="showPage('home-page')">Domains</a>
+                <a href="#" onclick="showPage('home-page')">Hosting</a>
+                <a href="#" onclick="showPage('home-page')">Websites</a>
+                <a href="#" onclick="showPage('home-page')">Security</a>
+                <a href="#" onclick="showPage('home-page')">Email</a>
+                <a href="#" onclick="showPage('home-page')">Deals</a>
+            </div>
+            <div class="auth-buttons" id="auth-buttons">
+                <button class="btn btn-outline" onclick="showPage('login-page')">Sign In</button>
+                <button class="btn btn-solid" onclick="showPage('cart-page')">Cart</button>
+            </div>
+            <div class="auth-buttons" id="user-menu" style="display: none;">
+                <button class="btn btn-outline" onclick="showPage('dashboard-page')">Dashboard</button>
+                <button class="btn btn-solid" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div id="home-page" class="page-container page-active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Bring your idea online with a .com</h1>
+            <p>Get a .com domain for just $0.01/1st first year and build a professional website with our easy-to-use tools.</p>
+            <div class="domain-search">
+                <input type="text" placeholder="Find your perfect domain">
+                <button>Search</button>
+            </div>
+            <div class="domain-examples">
+                <p>.com $0.01/1st yr | .co $5.99 | .org $5.99 | .tech $0.01 | .online $0.01</p>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products">
+            <div class="section-title">
+                <h2>Products for every need</h2>
+                <p>GoDaddy has everything you need to create a powerful, professional online presence</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-img">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Domain Names</h3>
+                        <p>Find the perfect domain for your business</p>
+                        <div class="product-price">From $0.01/1st yr</div>
+                        <button class="btn btn-solid">Find Your Domain</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Web Hosting</h3>
+                        <p>Reliable, secure hosting for sites of all sizes</p>
+                        <div class="product-price">From $2.99/mo</div>
+                        <button class="btn btn-solid">See Plans</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="product-info">
+                        <h3>Professional Email</h3>
+                        <p>Build trust with a business email address</p>
+                        <div class="product-price">From $1.99/mo</div>
+                        <button class="btn btn-solid">Get Email</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="section-title">
+                <h2>Why choose GoDaddy?</h2>
+                <p>We're the world's largest domain registrar and web hosting provider</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Trusted Expertise</h3>
+                    <p>Over 20 million customers rely on our services</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-headset"></i>
+                    <h3>24/7 Support</h3>
+                    <p>Our experts are available around the clock to help</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-lock"></i>
+                    <h3>Secure & Reliable</h3>
+                    <p>Industry-leading security and 99.9% uptime guarantee</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Easy to Use</h3>
+                    <p>Intuitive tools that make managing your online presence simple</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login-page" class="page-container">
+        <div class="form-container">
+            <h2>Sign In to Your Account</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" placeholder="Your email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Your password" required>
+                </div>
+                <button type="submit" class="form-btn">Sign In</button>
+            </form>
+            <div class="form-link">
+                Don't have an account? <a href="#" onclick="showPage('signup-page')">Sign up</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div id="signup-page" class="page-container">
+        <div class="form-container">
+            <h2>Create Your Account</h2>
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Choose a username" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Your email address" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" placeholder="Your phone number">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Create a strong password" required>
+                    <div class="password-strength">
+                        <div class="strength-meter" id="strengthMeter"></div>
+                    </div>
+                    <small>Use 8+ characters with a mix of letters, numbers & symbols</small>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" placeholder="Confirm your password" required>
+                </div>
+                <div class="terms">
+                    <input type="checkbox" id="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                </div>
+                <button type="submit" class="form-btn">Create Account</button>
+            </form>
+            <div class="form-link">
+                Already have an account? <a href="#" onclick="showPage('login-page')">Log in</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page-container">
+        <div class="dashboard">
+            <div class="dashboard-header">
+                <h2>My Dashboard</h2>
+                <p>Welcome back, <span id="user-name">User</span>!</p>
+            </div>
+
+            <div class="dashboard-welcome">
+                <h3>Your GoDaddy Account</h3>
+                <p>Manage your products, view bills, and access support all from one place.</p>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <i class="fas fa-globe"></i>
+                    <h3>3</h3>
+                    <p>Domains</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-server"></i>
+                    <h3>1</h3>
+                    <p>Hosting Plans</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>5</h3>
+                    <p>Email Accounts</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>2</h3>
+                    <p>Security Products</p>
+                </div>
+            </div>
+
+            <div class="dashboard-services">
+                <div class="services-header">
+                    <h3>Your Products</h3>
+                    <button class="btn btn-solid">Add New</button>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <h4>example.com</h4>
+                        <p>Registered: Jan 15, 2023</p>
+                        <p>Expires: Jan 15, 2024</p>
+                        <span class="service-status status-active">Active</span>
+                    </div>
+                    <div class="service-card">
+                        <h4>Web Hosting - Economy</h4>
+                        <p>Plan: Economy Linux Hosting</p>
+                        <p>Next billing: Dec 10, 2023</p>
+                        <span class="service-status status-active">Active</span>
+                    </div>
+                    <div class="service-card">
+                        <h4>Professional Email</h4>
+                        <p>5 mailboxes</p>
+                        <p>Next billing: Dec 5, 2023</p>
+                        <span class="service-status status-active">Active</span>
+                    </div>
+                    <div class="service-card">
+                        <h4>SSL Certificate</h4>
+                        <p>Standard SSL</p>
+                        <p>Expires: Mar 20, 2024</p>
+                        <span class="service-status status-active">Active</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h3>About GoDaddy</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Newsroom</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Community</a></li>
+                    <li><a href="#">Product Support</a></li>
+                    <li><a href="#">Report Abuse</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="#">Webmail</a></li>
+                    <li><a href="#">WHOIS</a></li>
+                    <li><a href="#">ICANN Confirmation</a></li>
+                    <li><a href="#">Site Map</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Accessibility Statement</a></li>
+                    <li><a href="#">Cookie Preferences</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>Copyright © 2023 GoDaddy Clone. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page-container').forEach(page => {
+                page.classList.remove('page-active');
+            });
+            
+            // Show the requested page
+            document.getElementById(pageId).classList.add('page-active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Check if user is logged in
+        function checkLoginStatus() {
+            const isLoggedIn = localStorage.getItem('godaddyCloneLoggedIn') === 'true';
+            const username = localStorage.getItem('godaddyCloneUsername') || 'User';
+            
+            if (isLoggedIn) {
+                document.getElementById('auth-buttons').style.display = 'none';
+                document.getElementById('user-menu').style.display = 'flex';
+                document.getElementById('user-name').textContent = username;
+            } else {
+                document.getElementById('auth-buttons').style.display = 'flex';
+                document.getElementById('user-menu').style.display = 'none';
+            }
+        }
+
+        // Logout function
+        function logout() {
+            localStorage.removeItem('godaddyCloneLoggedIn');
+            localStorage.removeItem('godaddyCloneUsername');
+            showPage('home-page');
+            checkLoginStatus();
+        }
+
+        // Password strength meter
+        const passwordInput = document.getElementById('password');
+        const strengthMeter = document.getElementById('strengthMeter');
+        
+        if (passwordInput && strengthMeter) {
+            passwordInput.addEventListener('input', function() {
+                const password = passwordInput.value;
+                let strength = 0;
+                
+                // Check password length
+                if (password.length >= 8) strength += 25;
+                
+                // Check for uppercase letters
+                if (password.match(/[A-Z]/)) strength += 25;
+                
+                // Check for numbers
+                if (password.match(/[0-9]/)) strength += 25;
+                
+                // Check for special characters
+                if (password.match(/[^A-Za-z0-9]/)) strength += 25;
+                
+                // Update strength meter
+                strengthMeter.style.width = strength + '%';
+                
+                // Update color based on strength
+                if (strength < 50) {
+                    strengthMeter.style.background = '#ff4d4d';
+                } else if (strength < 100) {
+                    strengthMeter.style.background = '#ffa64d';
+                } else {
+                    strengthMeter.style.background = '#2eb82e';
+                }
+            });
+        }
+
+        // Form validation and submission
+        const signupForm = document.getElementById('signupForm');
+        if (signupForm) {
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const username = document.getElementById('username').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const terms = document.getElementById('terms').checked;
+                
+                // Validate passwords match
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match!');
+                    return;
+                }
+                
+                // Validate terms accepted
+                if (!terms) {
+                    alert('You must accept the Terms of Service and Privacy Policy');
+                    return;
+                }
+                
+                // Save user data to localStorage
+                localStorage.setItem('godaddyCloneLoggedIn', 'true');
+                localStorage.setItem('godaddyCloneUsername', username);
+                localStorage.setItem('godaddyCloneEmail', email);
+                
+                // Update UI
+                checkLoginStatus();
+                
+                // Show success message and redirect to dashboard
+                alert(`Account created successfully!\nWelcome ${username}!`);
+                showPage('dashboard-page');
+            });
+        }
+
+        // Login form submission
+        const loginForm = document.getElementById('loginForm');
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                // Simple validation
+                if (!email || !password) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                // For demo purposes, any login will work
+                localStorage.setItem('godaddyCloneLoggedIn', 'true');
+                localStorage.setItem('godaddyCloneUsername', email.split('@')[0]);
+                localStorage.setItem('godaddyCloneEmail', email);
+                
+                // Update UI
+                checkLoginStatus();
+                
+                // Redirect to dashboard
+                showPage('dashboard-page');
+            });
+        }
+
+        // Domain search functionality
+        const domainSearchBtn = document.querySelector('.domain-search button');
+        if (domainSearchBtn) {
+            domainSearchBtn.addEventListener('click', function() {
+                const domainInput = document.querySelector('.domain-search input');
+                if (domainInput.value.trim() === '') {
+                    alert('Please enter a domain name to search');
+                } else {
+                    alert(`Searching for domain: ${domainInput.value}`);
+                    // In a real implementation, this would make an API call to check domain availability
+                }
+            });
+        }
+
+        // Initialize page
+        checkLoginStatus();
+    </script>
+</body>
+</html>
